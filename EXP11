@@ -1,0 +1,51 @@
+ Simple Top-Down Parser for a Context-Free Grammar
+
+grammar = {
+    'S': [['NP', 'VP']],
+    'NP': [['Det', 'N']],
+    'VP': [['V', 'NP']],
+    'Det': [['the'], ['a']],
+    'N': [['cat'], ['dog']],
+    'V': [['sees'], ['likes']]
+}
+
+def parse(symbol, words, pos=0):
+    # Terminal symbol
+    if symbol not in grammar:
+        if pos < len(words) and symbol == words[pos]:
+            return pos + 1
+        return None
+
+    # Try each production rule
+    for production in grammar[symbol]:
+        current_pos = pos
+        success = True
+
+        for sym in production:
+            result = parse(sym, words, current_pos)
+
+            if result is None:
+                success = False
+                break
+
+            current_pos = result
+
+        if success:
+            return current_pos
+
+    return None
+
+
+# Input sentence
+sentence = input("Enter a sentence: ").lower().split()
+
+# Start parsing from S
+result = parse('S', sentence)
+
+if result == len(sentence):
+    print("Sentence is accepted by the grammar.")
+else:
+    print("Sentence is rejected by the grammar.")
+"""
+the cat sees a dog
+"""
