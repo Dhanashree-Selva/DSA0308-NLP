@@ -1,0 +1,20 @@
+from openai import OpenAI
+
+# Create OpenAI client
+client = OpenAI(api_key="YOUR_API_KEY")
+
+# Given prompt
+prompt = "Write a short paragraph about Artificial Intelligence."
+
+# Generate text
+response = client.responses.create(
+    model="gpt-5.6-luna",
+    input=prompt
+)
+
+# Display generated text
+print("Prompt:")
+print(prompt)
+
+print("\nGenerated Text:")
+print(response.output_text)
